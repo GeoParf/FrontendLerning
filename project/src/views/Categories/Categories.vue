@@ -77,14 +77,8 @@
         <div class="col">
           <div class="product_grid" id="catalog">
             <!-- SCRIPT -->
-            <Catalog />
-          </div>
-          <div class="product_pagination">
-            <ul>
-              <li class="active"><a href="#">01.</a></li>
-              <li><a href="#">02.</a></li>
-              <li><a href="#">03.</a></li>
-            </ul>
+            <Catalog :query="query" />
+            <Pagination :onPage="4" @paginate="query.page = $event" />
           </div>
         </div>
       </div>
@@ -187,8 +181,19 @@
 
 <script>
 import Catalog from "../../components/Catalog.vue";
+import Pagination from "@/components/Pagination.vue";
 export default {
-  components: { Catalog },
+  name: "Categories",
+  components: { Catalog, Pagination },
+  data() {
+    return {
+      query: {
+        page: 1,
+        show: 4,
+        sort: "ad",
+      },
+    };
+  },
 };
 </script>
 

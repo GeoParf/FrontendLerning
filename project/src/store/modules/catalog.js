@@ -7,16 +7,17 @@ export default {
     product: null,
   }),
   actions:{
-    async getCatalog({commit}) { 
+    async getCatalog({commit}, parametres = null) { 
       try {
-        const data =  await catalog.getCatalog();
+        const {data, pagination: {total}} =  await catalog.getCatalog(parametres);
         commit('setCatalogItems', data);
+        commit('Pagination/setTotal', total, {root: true});
       }
       catch(err) {
         throw err;
       };
     },
-
+    
     async getProduct({commit}, id){
       try{
         const item = await catalog.getProduct(id);
@@ -38,12 +39,11 @@ export default {
     }
   },
   getters:{
-    itemsMain(state){
-      return state.items.filter(el => !!el.category);
+    items(state){
+      return state.items;
     },
     getProduct(state){
       return state.product;
     },
-    
   }
 }

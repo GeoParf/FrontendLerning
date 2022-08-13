@@ -17,6 +17,12 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Catalog",
   components: { item },
+  props: {
+    query: {
+      type: Object,
+      default: () => null,
+    },
+  },
   data() {
     return {
       url: "/api/catalog",
@@ -25,19 +31,20 @@ export default {
       error: null,
     };
   },
-  async created() {
-    try {
-      await this.getCatalog(this.url);
-    } catch (err) {
-      this.error = err;
-      console.warn(err);
-    }
-  },
 
   computed: {
     ...mapGetters({
-      items: "Catalog/itemsMain",
+      items: "Catalog/items",
     }),
+  },
+
+  watch: {
+    query: {
+      deep: true,
+      async handler() {
+        await this.getCatalog(this.query);
+      },
+    },
   },
 
   methods: {
@@ -45,6 +52,15 @@ export default {
       getCatalog: "Catalog/getCatalog",
       addItem: "Cart/addItem",
     }),
+  },
+
+  async created() {
+    try {
+      await this.getCatalog(this.query);
+    } catch (err) {
+      this.error = err;
+      console.warn(err);
+    }
   },
 };
 </script>

@@ -172,7 +172,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <Catalog />
+          <Catalog :query="{filter: 'category'}"/>
           <!--Vue Component-->
         </div>
       </div>

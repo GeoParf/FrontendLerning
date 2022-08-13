@@ -54,5 +54,54 @@
         "price": 60,
         "category": 3,
         "id": "p8"
+    },
+    {
+        "imgUrl": "/product_5.jpg",
+        "name": "Wairless Headphones",
+        "price": 20,
+        "category": 2,
+        "id": "p9"
+    },
+    {
+        "imgUrl": "/product_7.jpg",
+        "name": "Video Camera",
+        "price": 410,
+        "category": null,
+        "id": "p10"
+    },
+    {
+        "imgUrl": "/product_8.jpg",
+        "name": "BlueTooth Keyboard",
+        "price": 160,
+        "category": 3,
+        "id": "p11"
+    },
+    {
+        "imgUrl": "/product_6.jpg",
+        "name": "Tablet Pro",
+        "price": 520,
+        "category": null,
+        "id": "p12"
+    },
+    {
+        "imgUrl": "/product_4.jpg",
+        "name": "Netbook",
+        "price": 2700,
+        "category": 1,
+        "id": "p13"
+    },
+    {
+        "imgUrl": "/product_3.jpg",
+        "name": "Mini USB",
+        "price": 70,
+        "category": null,
+        "id": "p14"
+    },
+    {
+        "imgUrl": "/product_1.jpg",
+        "name": "Smart Phone Pro",
+        "price": 870,
+        "category": 1,
+        "id": "p15"
     }
 ]

@@ -9,7 +9,7 @@ server.use(express.json());
 
 server.use('/', express.static('./public'));
 
-const catalogURl = './src/db/catalog.json';
+const catalogUrl = './src/db/catalog.json';
 const cartUrl = './src/db/cart.json';
 const menuUrl = './src/db/menu.json';
 
@@ -17,13 +17,45 @@ const reader = require('../plagins/reader');
 const writer = require('../plagins/writer');
 
 const cart = require('../src/components/cart');
+const catalog = require('../src/components/catalog');
 
 // Get requests
 
 server.get('/catalog', async (req, res) => {
     try {
-        const data = await reader(catalogURl);
-        res.json(data);
+        let data = await reader(catalogUrl);
+        let total = data.length;
+        const query = Object.keys(req.query);
+        if(query.length){
+            const params = req.query;
+            if(params.filter){
+                data = catalog.filter(data, params.filter);
+                total = data.length;
+            };
+            if(params.show){
+                let {page, show} = params;
+                page--;
+                const firstElNumber = +page * +show;
+                const lastElNumber = firstElNumber + +show;
+                data = data.slice(firstElNumber, lastElNumber);
+            };
+        };
+        res.json({data, pagination: {total}});
+    } catch (err) {
+        console.log('GET /catalog ERR');
+    };
+});
+
+server.get('/catalog/:id', async (req, res) => {
+    const {id} = req.params;
+    try {
+        const data = await reader(catalogUrl);
+        const item = catalog.findItem(data, id) || null;
+        if(item){
+            res.json(item);
+        } else {
+            res.sendStatus(404);
+        }
     } catch (err) {
         console.log('GET /catalog ERR');
     };
@@ -67,11 +99,11 @@ server.post('/cart', async (req, res) => {
 // Put request for Cart
 
 server.put('/cart/:id', async (req, res) => {
-    const { value } = req.body;
+    const { amount } = req.body;
     const { id } = req.params;
     try {
         const data = await reader(cartUrl);
-        const newCart = cart.change(data, id, value);
+        const newCart = cart.change(data, id, amount);
         data.total = cart.countTotal(data);
         await writer(cartUrl, newCart);
         res.json({ error: false });
